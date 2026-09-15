@@ -1,0 +1,156 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>💧 Água na Conta</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <span class="brand-icon">💧</span>
+        <div>
+          <h1 class="brand-title">Água na Conta</h1>
+          <p class="brand-sub">Educação financeira e hídrica para todos</p>
+        </div>
+      </div>
+      <nav class="header-nav">
+        <a href="#formulario" class="btn btn-outline-white">Analisar conta</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container hero-content">
+      <div class="hero-text">
+        <span class="badge-pill">🚰 Projeto Social · ADS</span>
+        <h2 class="hero-title">Entenda sua conta<br />de água de um jeito simples</h2>
+        <p class="hero-desc">
+          Insira os dados da sua conta e transformamos os números em informações claras,
+          alertas de desperdício e dicas práticas para economizar água e dinheiro.
+        </p>
+        <a href="#formulario" class="btn btn-primary">Começar agora →</a>
+      </div>
+      <div class="hero-illustration" aria-hidden="true">
+        <div class="water-drop">
+          <div class="drop-inner">
+            <span class="drop-emoji">💧</span>
+            <span class="drop-label">Análise<br/>Inteligente</span>
+          </div>
+        </div>
+        <div class="ripple r1"></div>
+        <div class="ripple r2"></div>
+        <div class="ripple r3"></div>
+      </div>
+    </div>
+  </section>
+
+  <main id="formulario" class="section-form">
+    <div class="container">
+      <div class="form-card">
+        <h2 class="form-title">📋 Dados da sua conta</h2>
+        <p class="form-subtitle">Preencha os campos abaixo. Quanto mais meses informar, melhor a análise!</p>
+        <form id="waterForm" novalidate>
+          <div class="form-grid">
+            <div class="field-group">
+              <label for="valorConta">💰 Valor da conta (R$)</label>
+              <div class="input-wrap">
+                <span class="input-prefix">R$</span>
+                <input type="number" id="valorConta" name="valorConta" min="0" step="0.01" placeholder="89.50" required />
+              </div>
+              <span class="field-hint">Valor total da fatura atual</span>
+            </div>
+            <div class="field-group">
+              <label for="consumoAtual">💧 Consumo atual (m³)</label>
+              <div class="input-wrap">
+                <input type="number" id="consumoAtual" name="consumoAtual" min="0" step="0.1" placeholder="18" required />
+                <span class="input-suffix">m³</span>
+              </div>
+              <span class="field-hint">Informado na fatura do mês</span>
+            </div>
+            <div class="field-group">
+              <label for="numPessoas">👨‍👩‍👧 Pessoas na residência</label>
+              <div class="input-wrap">
+                <input type="number" id="numPessoas" name="numPessoas" min="1" max="20" step="1" placeholder="4" required />
+                <span class="input-suffix">pessoas</span>
+              </div>
+              <span class="field-hint">Quantas pessoas moram na casa?</span>
+            </div>
+          </div>
+
+          <div class="prev-months-section">
+            <div class="prev-months-header">
+              <h3>📅 Consumo dos meses anteriores (m³)</h3>
+              <p>Adicione até 5 meses para ver o histórico completo</p>
+            </div>
+            <div id="prevMonthsContainer" class="prev-months-grid"></div>
+            <button type="button" id="addMonthBtn" class="btn btn-ghost">+ Adicionar mês</button>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn btn-outline" id="resetBtn">Limpar</button>
+            <button type="submit" class="btn btn-primary" id="analyzeBtn">🔍 Analisar minha conta</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <section id="resultados" class="section-results hidden" aria-live="polite">
+    <div class="container">
+      <div class="results-header">
+        <h2 class="results-title">📊 Resultado da sua análise</h2>
+        <button id="editBtn" class="btn btn-outline btn-sm">✏️ Editar dados</button>
+      </div>
+      <div id="overviewCards" class="overview-cards"></div>
+      <div id="trendAlert" class="trend-alert hidden"></div>
+      <div id="chartSection" class="chart-section hidden">
+        <h3 class="section-label">📈 Histórico de consumo</h3>
+        <div class="chart-wrapper">
+          <canvas id="consumoChart"></canvas>
+        </div>
+      </div>
+      <div id="percapitaSection" class="percapita-section"></div>
+      <div class="tips-section">
+        <h3 class="section-label">💡 5 maneiras de reduzir seu consumo</h3>
+        <div id="tipsList" class="tips-grid"></div>
+      </div>
+      <div class="simulator-card">
+        <div class="sim-header">
+          <h3>🧮 Simulador de Economia</h3>
+          <p>Se eu reduzir meu consumo em <strong id="simPctLabel">20%</strong>, quanto posso economizar?</p>
+        </div>
+        <div class="sim-slider-wrap">
+          <input type="range" id="simSlider" min="5" max="50" step="5" value="20" aria-label="Percentual de reducao" />
+          <div class="sim-ticks">
+            <span>5%</span><span>10%</span><span>15%</span><span>20%</span>
+            <span>25%</span><span>30%</span><span>35%</span><span>40%</span>
+            <span>45%</span><span>50%</span>
+          </div>
+        </div>
+        <div id="simResults" class="sim-results"></div>
+        <div id="simInsight" class="sim-insight"></div>
+      </div>
+      <div class="cta-share">
+        <p>📲 Conhece alguém que pode se beneficiar dessa análise?</p>
+        <button id="shareBtn" class="btn btn-primary">Compartilhar 💧</button>
+        <button id="printBtn" class="btn btn-outline">🖨️ Imprimir relatório</button>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>💧 <strong>Água na Conta</strong> · Projeto Social ADS</p>
+      <p class="footer-sub">Feito com 💙 para promover o uso consciente da água</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
